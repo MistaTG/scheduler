@@ -78,9 +78,14 @@ export default function Application(props) {
   // let appointmentsForDay = [];
 
   useEffect(() => {
-    const promise1 = state.day;
-    const promise2 = axios.get("/api/days");
-    const promise3 = axios.get("/api/appointments");
+    // const promise1 = state.day;
+    // const promise2 = axios.get("/api/days");
+    // const promise3 = axios.get("/api/appointments");
+
+    // const promise1 = state.day;
+    const promise1 = axios.get("/api/days");
+    const promise2 = axios.get("/api/appointments");
+    const promise3 = axios.get("/api/interviewers");
 
     Promise.all([
       Promise.resolve(promise1),
@@ -88,10 +93,10 @@ export default function Application(props) {
       Promise.resolve(promise3),
     ]).then((all) => {
       
-      const [day, second, appointments] = all;
-      console.log(day, second.data, appointments.data);
+      const [days, appointments, interviewer] = all;
+      console.log(days.data, appointments.data, interviewer.data);
       
-      setState(prev => ({ day: day, days: second.data, appointments: appointments.data}))
+      setState(prev => ({ day: state.day, days: days.data, appointments: appointments.data}))
     });
   }, []);
   
@@ -114,12 +119,15 @@ export default function Application(props) {
              </section>
       <section className="schedule">
         
-        {getAppointmentsForDay(state, state.day).map(appointment => (
+        {getAppointmentsForDay(state, state.day).map(appointment => {
+          const interview = getInterview(state, appointment.interview)
+          return (
           <Appointments 
             key={appointment.id}
+            interview={interview}
             {...appointment}
           />
-        ))}
+        )})}
         <Appointments key="last" time="6pm" />
       </section>
     </main>
