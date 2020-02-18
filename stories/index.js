@@ -6,12 +6,21 @@ import { action } from "@storybook/addon-actions";
 import "index.scss";
 
 import Button from "components/Button";
-import DayListItem from "components/DayListItem.js"
-import DayList from "components/DayList.js"
-import InterviewerListItem from "components/InterviewerListItem.js"
-import InterviewerList from "components/InterviewerList.js"
-import Appointment from "components/Appointment"
 
+import DayListItem from "components/DayListItem"
+import DayList from "components/DayList"
+
+import InterviewerListItem from "components/InterviewerListItem"
+import InterviewerList from "components/InterviewerList"
+
+import Appointment from "components/Appointment"
+import Header from "components/Appointment/Header"
+import Empty from "components/Appointment/Empty"
+import Show from "components/Appointment/Show"
+import Delete from "components/Appointment/Delete"
+import Status from "components/Appointment/Status"
+import Error from "components/Appointment/Error"
+import Form from "components/Appointment/Form"
 
 storiesOf("Button", module)
   .addParameters({
@@ -134,4 +143,39 @@ storiesOf("Appointment", module)
     background: [{ name: "white", value: "#fff", default: true}]
   })
   .add("Appointment", () => <Appointment />)
-  .add("Appointment", () => <Appointment time={'12pm'} />)
+  .add("Appointment with Time", () => <Appointment time={'12pm'} />)
+  .add("Header", () => <Header time="12pm" />)
+  .add("Empty", () => <Empty onAdd={action("onAdd")} />)
+  .add("Show", () => 
+    <Show 
+      student="Austin Nazareth"
+      interviewer={interviewer}
+      onEdit={action("onEdit")}
+      onDelete={action("onDelete")}
+    />)
+  .add("Delete", () => 
+    <Delete 
+      message={"Delete the appointment?"}
+      onConfirm={action("onConfirm")}
+      onCancel={action("onCancel")}
+    />)
+  .add("Status", () => <Status message={"Deleting"} />)
+  .add("Error", () => 
+    <Error 
+      message={"Could not delete appointment."}
+      onClose={action("onClose")}
+    />)
+  .add("Create Form", () =>
+    <Form 
+      interviewers={interviewers}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />)
+  .add("Edit Form", () => 
+    <Form
+      name={"Austin N"}
+      interviewers={interviewers}
+      interviewer={2}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />);
