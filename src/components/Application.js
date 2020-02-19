@@ -60,6 +60,7 @@ export default function Application(props) {
             interview={interview}
             id={appointment.id}
             time={appointment.time}
+            // interviewers={state.interviewers}
           />
         )})}
         <Appointments key="last" time="6pm" />

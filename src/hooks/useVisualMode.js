@@ -7,8 +7,10 @@ function useVisualMode(initial) {
   function transition(newMode, replace = false) {
     if (replace) {
       // Not sure if this is implemented correctly either, passes the test But I feel like it should still be adding mode to the history
-      history.pop();
-      setHistory([...history]);
+      // history.pop();
+      const popHistory = history;
+      popHistory.pop();
+      setHistory([...popHistory]);
     } else {
       setHistory([...history, mode]);
     }
@@ -16,14 +18,15 @@ function useVisualMode(initial) {
   }
 
   function back() {
-    // Not sure why the test of making sure that one element is in the array passes when back is called passes.
-    // if (history.length === 1) {
-    //   setMode(history[0]);
-    // } else {
+    
+    if (history.length === 1) {
+      setMode(history[0]);
+    } else {
       setMode(history[history.length - 1]);
-      history.pop();
-      setHistory([...history]);
-    // }
+      const popHistory = history;
+      popHistory.pop();
+      setHistory([...popHistory]);
+    }
   }
   
   return { mode, transition, back } ;
