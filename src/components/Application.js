@@ -59,6 +59,30 @@ export default function Application(props) {
         console.log('err', error);
     }))
   }
+
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return Promise.resolve(
+      axios.delete(`/api/appointments/${id}`, 
+      appointments[id]
+      )
+      .then(function (response) {
+        setState({...state, appointments})
+        console.log('res', response);
+      })
+      .catch(function (error) {
+        console.log('err', error);
+    }))
+  }
   
   return (
           <main className="layout">
@@ -89,6 +113,7 @@ export default function Application(props) {
             time={appointment.time}
             interviewers={interviewersForDay}
             bookInterview={bookInterview}
+            cancelInterview={cancelInterview}
           />
         )})}
         <Appointments key="last" time="6pm" />
