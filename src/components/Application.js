@@ -34,6 +34,31 @@ export default function Application(props) {
   }, []);
 
   const interviewersForDay = getInterviewersForDay(state, state.day);
+
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    
+    return Promise.resolve(
+      axios.put(`/api/appointments/${id}`, 
+      appointments[id]
+      )
+      .then(function (response) {
+        setState({...state, appointments})
+        console.log('res', response);
+      })
+      .catch(function (error) {
+        console.log('err', error);
+    }))
+  }
   
   return (
           <main className="layout">
@@ -63,6 +88,7 @@ export default function Application(props) {
             id={appointment.id}
             time={appointment.time}
             interviewers={interviewersForDay}
+            bookInterview={bookInterview}
           />
         )})}
         <Appointments key="last" time="6pm" />

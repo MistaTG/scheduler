@@ -11,24 +11,39 @@ import './styles.scss';
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
-  // const CREATE = "CREATE";
+  const CREATE = "CREATE";
+
+  function onAdd() {
+    transition(CREATE);
+  }
+
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+
+    props.bookInterview(props.id, interview)
+    .then(res => transition(SHOW));
+  }
 
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   
   return (
     <article className="appointment">
       <Header time={props.time} />
-      {mode === EMPTY && <Empty onAdd={transition} />}
+      {mode === EMPTY && <Empty onAdd={onAdd} />}
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
         />
       )}
-      {mode === 'CREATE' && (
+      {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
           onBack={back}
+          onSave={save}
         />
       )}
     </article>
