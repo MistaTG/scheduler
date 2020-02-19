@@ -10,6 +10,20 @@ export function getAppointmentsForDay(state, dayName) {
   return appointments;
 }
 
+export function getInterviewersForDay(state, dayName) {
+  const selectedDay = state.days.filter(day => day.name === dayName);
+  
+  if (selectedDay.length === 0) {
+    return selectedDay;
+  }
+  const interviewsForDay = selectedDay[0].interviewers;
+  const interviews = interviewsForDay.map(inter => state.interviewers[inter])
+  // console.log('test', interviews)
+  
+  return interviews;
+}
+
+
 export function getInterview(state, interview) {
   if (!interview || !state) {
     return null
