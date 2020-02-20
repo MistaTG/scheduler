@@ -6,6 +6,7 @@ import Empty from './Empty';
 import Form from './Form';
 import Status from './Status';
 import Delete from './Delete';
+import Error from './Error'
 import useVisualMode from '..//../hooks/useVisualMode';
 
 import './styles.scss';
@@ -17,6 +18,8 @@ export default function Appointment(props) {
   const SAVING = "SAVING";
   const DELETE = "DELETE";
   const DELETING = "DELETING";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
 
   function onAdd() {
     transition(CREATE);
@@ -31,7 +34,8 @@ export default function Appointment(props) {
     transition(SAVING);
 
     props.bookInterview(props.id, interview)
-    .then(res => transition(SHOW));
+    .then(res => transition(SHOW))
+    .catch(err => transition(ERROR_SAVE, true));
   }
 
   function onDelete() {
@@ -43,6 +47,7 @@ export default function Appointment(props) {
 
     props.cancelInterview(props.id)
     .then(res => transition(EMPTY))
+    .catch(err => transition(ERROR_DELETE, true));
   }
 
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
@@ -80,6 +85,18 @@ export default function Appointment(props) {
       {mode === DELETING && (
         <Status 
           message={'DELETING'}
+        />
+      )}
+      {mode === ERROR_SAVE && (
+        <Error 
+          message={'ERROR SAVING'}
+          onClose={back}
+        />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error 
+          message={'ERROR DELETING'}
+          onClose={back}
         />
       )}
     </article>
