@@ -4,6 +4,7 @@ export function getAppointmentsForDay(state, dayName) {
   if (selectedDay.length === 0) {
     return selectedDay;
   }
+  console.log('yomama', state)
   const appointmentsForDay = selectedDay[0].appointments;
   const appointments = appointmentsForDay.map(app => state.appointments[app])
   

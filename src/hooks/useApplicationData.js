@@ -1,10 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import axios from "axios";
 
 const useApplicationData = () => {
-  const [state, setState] = useState({ day: "Monday", days: [], appointments: {}, interviewers: {}});
+  
+  const SET_DAY = "SET_DAY";
+  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+  const SET_INTERVIEW = "SET_INTERVIEW";
+  
+  function reducer(state, {day, days, appointments, interviewers, type}) {
+    switch (type) {
+      case SET_DAY:
+        return {...state, day: day}
+      case SET_APPLICATION_DATA:
+        return {...state, days: days.data, appointments: appointments.data, interviewers: interviewers.data}
+      case SET_INTERVIEW: {
+        return {...state, appointments}
+      }
+      default:
+        throw new Error(
+          `Tried to reduce with unsupported action type: ${type}`
+        );
+    }
+  }
 
-  const setDay = day => setState(prev => ({ ...prev, day }));
+
+
+  const [state, dispatch] = useReducer(reducer, { day: "Monday", days: [], appointments: {}, interviewers: {}}  );
+
+  const setDay = day => dispatch({ type: SET_DAY, day });
 
   useEffect(() => {
     const promise1 = axios.get("/api/days");
@@ -17,9 +40,9 @@ const useApplicationData = () => {
       Promise.resolve(promise3),
     ]).then((all) => {
       
-      const [days, appointments, interviewer] = all;
+      const [days, appointments, interviewers] = all;
       
-      setState(prev => ({ day: state.day, days: days.data, appointments: appointments.data, interviewers: interviewer.data}))
+      dispatch({ type: SET_APPLICATION_DATA, days, appointments, interviewers });
     });
   }, []);
 
@@ -39,7 +62,7 @@ const useApplicationData = () => {
       appointments[id]
       )
       .then(function (response) {
-        setState({...state, appointments})
+        dispatch({ type: SET_INTERVIEW, appointments });
         console.log('res', response);
       }))
   }
@@ -60,7 +83,8 @@ const useApplicationData = () => {
       appointments[id]
       )
       .then(function (response) {
-        setState({...state, appointments})
+        console.log('app', appointments)
+        dispatch({ type: SET_INTERVIEW, appointments});
         console.log('res', response);
       }))
   }
