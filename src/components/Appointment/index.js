@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import Header from './Header';
 import Show from './Show';
@@ -16,6 +16,7 @@ export default function Appointment(props) {
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = "SAVING";
+  const EDITING = "EDITING";
   const DELETE = "DELETE";
   const DELETING = "DELETING";
   const ERROR_SAVE = "ERROR_SAVE";
@@ -25,17 +26,26 @@ export default function Appointment(props) {
     transition(CREATE);
   }
 
+  function onEdit() {
+    transition(EDITING)
+  }
+
   function onSave(name, interviewer) {
-    const interview = {
-      student: name,
-      interviewer
-    };
-
-    transition(SAVING);
-
-    props.bookInterview(props.id, interview)
-    .then(res => transition(SHOW))
-    .catch(err => transition(ERROR_SAVE, true));
+    if (name && interviewer) {
+      const interview = {
+        student: name,
+        interviewer
+      };
+  
+      transition(SAVING);
+  
+      props.bookInterview(props.id, interview)
+      .then(res => transition(SHOW))
+      .catch(err => transition(ERROR_SAVE, true));
+    } else {
+      transition(ERROR_SAVE)
+    }
+   
   }
 
   function onDelete() {
@@ -61,10 +71,20 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       )}
       {mode === CREATE && (
         <Form
+          interviewers={props.interviewers}
+          onBack={back}
+          onSave={onSave}
+        />
+      )}
+      {mode === EDITING && (
+        <Form
+          name={props.interview.student}
+          interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
           onBack={back}
           onSave={onSave}

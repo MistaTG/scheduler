@@ -13,7 +13,7 @@ export default function useVisualMode(initial) {
       const popHistory = [...history];
       popHistory.pop();
       setMode(popHistory[popHistory.length - 1]);
-      setHistory(prev => ([...prev]));
+      setHistory([...popHistory]);
     }
   }
   return { mode, transition, back };

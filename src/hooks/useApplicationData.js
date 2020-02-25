@@ -62,7 +62,6 @@ const useApplicationData = () => {
     for (let i = 1; i <= dayAppLength; i++) {
       if (appointments[i].interview) {
         spots--;
-      } else {
       }
     }
 
