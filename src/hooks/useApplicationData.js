@@ -37,10 +37,10 @@ const useApplicationData = () => {
       [id]: appointment
     };
 
-    const dayArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    const dayArray = state.days.map(day => day.name);
     const dayId = dayArray.findIndex(day => day === state.day);
     const dayAppLength = state.days[dayId].appointments.length;
-    let spots = 5;
+    let spots = dayAppLength;
 
     for (let i = 1; i <= dayAppLength; i++) {
       if (appointments[i].interview) {
