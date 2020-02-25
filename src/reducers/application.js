@@ -8,6 +8,8 @@ export default function reducer(state, {day, days, appointments, interviewers, t
       return {...state, day: day}
     case SET_APPLICATION_DATA:
       return {...state, days: days.data, appointments: appointments.data, interviewers: interviewers.data}
+    case SET_INTERVIEW:
+      return {...state, days, appointments}
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${type}`
