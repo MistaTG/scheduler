@@ -132,7 +132,9 @@ describe("Application", () => {
     
     await waitForElement(() => getByText(container, "ERROR DELETING"));
 
-    expect(getByText(container, "ERROR DELETING")).toBeInTheDocument();
+    fireEvent.click(getByAltText(container, "Close"))
+
+    expect(getByText(container, "Johnny Boi")).toBeInTheDocument();
     expect(getAllByText(container, "1 spot remaining")[0]).toBeTruthy();
   });
 });
