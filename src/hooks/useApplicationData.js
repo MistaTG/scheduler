@@ -99,7 +99,7 @@ const useApplicationData = () => {
     const days = state.days.map(day => {
       if (state.day === day.name) {
         day.spots++;
-        return { ...day };
+        return { ...day, spots: day.spots++  };
       } else {
         return day;
       }
