@@ -1,11 +1,13 @@
-import React from 'react';
+import React from "react";
 
-const Error = (props) => {
-  return ( 
+// The Error component if something goes wrong
+
+const Error = props => {
+  return (
     <main className="appointment__card appointment__card--error">
       <section className="appointment__error-message">
         <h1 className="text--semi-bold">{props.message}</h1>
-        <h3 className="text--light">Could not delete appointment</h3>
+        <h3 className="text--light">{props.errMessage}</h3>
       </section>
       <img
         onClick={props.onClose}
@@ -14,7 +16,7 @@ const Error = (props) => {
         alt="Close"
       />
     </main>
-   );
-}
- 
+  );
+};
+
 export default Error;

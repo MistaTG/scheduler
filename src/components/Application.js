@@ -2,12 +2,19 @@ import React from "react";
 
 import DayList from "components/DayList.js";
 import Appointments from "./Appointment";
-import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "../helpers/selectors";
-import useApplicationData from "../hooks/useApplicationData"
+import {
+  getAppointmentsForDay,
+  getInterviewersForDay,
+  getInterview
+} from "../helpers/selectors";
+import useApplicationData from "../hooks/useApplicationData";
 
 import "components/Application.scss";
 
+// The main component that gets rendered from root
+
 export default function Application(props) {
+
   const {
     state,
     setDay,
@@ -17,21 +24,21 @@ export default function Application(props) {
 
   const interviewers = getInterviewersForDay(state, state.day);
 
+  // Iterates over all the appointments in the given day and returns an array of objects that are the appointment components
   const appointments = getAppointmentsForDay(state, state.day).map(
     appointment => {
       return (
-          <Appointments
-            key={appointment.id}
-            {...appointment}
-            interview={getInterview(state, appointment.interview)}
-            interviewers={interviewers}
-            bookInterview={bookInterview}
-            cancelInterview={cancelInterview}
+        <Appointments
+          key={appointment.id}
+          {...appointment}
+          interview={getInterview(state, appointment.interview)}
+          interviewers={interviewers}
+          bookInterview={bookInterview}
+          cancelInterview={cancelInterview}
         />
       );
     }
   );
-  
 
   return (
     <main className="layout">

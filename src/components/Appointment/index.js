@@ -1,17 +1,20 @@
 import React from "react";
 
-import Header from './Header';
-import Show from './Show';
-import Empty from './Empty';
-import Form from './Form';
-import Status from './Status';
-import Delete from './Delete';
-import Error from './Error'
-import useVisualMode from '..//../hooks/useVisualMode';
+import Header from "./Header";
+import Show from "./Show";
+import Empty from "./Empty";
+import Form from "./Form";
+import Status from "./Status";
+import Delete from "./Delete";
+import Error from "./Error";
+import useVisualMode from "../../hooks/useVisualMode";
 
-import './styles.scss';
+import "./styles.scss";
+
+// The main component that shows all the other appointment components
 
 export default function Appointment(props) {
+  // All the modes for the Appointment Commponent
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
@@ -27,7 +30,7 @@ export default function Appointment(props) {
   }
 
   function onEdit() {
-    transition(EDITING)
+    transition(EDITING);
   }
 
   function onSave(name, interviewer) {
@@ -36,16 +39,17 @@ export default function Appointment(props) {
         student: name,
         interviewer
       };
-  
+
       transition(SAVING);
-  
-      props.bookInterview(props.id, interview)
-      .then(res => transition(SHOW))
-      .catch(err => transition(ERROR_SAVE, true));
+
+      // Calls the bookInterview function, which is an axios call and renders the show state if successful
+      props
+        .bookInterview(props.id, interview)
+        .then(res => transition(SHOW))
+        .catch(err => transition(ERROR_SAVE, true));
     } else {
-      transition(ERROR_SAVE)
+      transition(ERROR_SAVE);
     }
-   
   }
 
   function onDelete() {
@@ -55,13 +59,17 @@ export default function Appointment(props) {
   function onDeleting() {
     transition(DELETING, true);
 
-    props.cancelInterview(props.id)
-    .then(res => transition(EMPTY))
-    .catch(err => transition(ERROR_DELETE, true));
+    // Calls the cancelInterview function, which is an axios call and renders the empty state if successful
+    props
+      .cancelInterview(props.id)
+      .then(res => transition(EMPTY))
+      .catch(err => transition(ERROR_DELETE, true));
   }
 
-  const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
-  
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -75,47 +83,37 @@ export default function Appointment(props) {
         />
       )}
       {mode === CREATE && (
-        <Form
-          interviewers={props.interviewers}
-          onBack={back}
-          onSave={onSave}
-        />
+        <Form interviewers={props.interviewers} onCancel={back} onSave={onSave} />
       )}
       {mode === EDITING && (
         <Form
           name={props.interview.student}
           interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
-          onBack={back}
+          onCancel={back}
           onSave={onSave}
         />
       )}
       {mode === DELETE && (
         <Delete
-          message={'Are you sure you want to delete?'}
+          message={"Are you sure you want to delete?"}
           onConfirm={onDeleting}
           onCancel={back}
         />
       )}
-      {mode === SAVING && (
-        <Status 
-          message={'SAVING'}
-        />
-      )}
-      {mode === DELETING && (
-        <Status 
-          message={'DELETING'}
-        />
-      )}
+      {mode === SAVING && <Status message={"SAVING"} />}
+      {mode === DELETING && <Status message={"DELETING"} />}
       {mode === ERROR_SAVE && (
-        <Error 
-          message={'ERROR SAVING'}
+        <Error
+          message={"ERROR SAVING"}
+          errMessage={"Oops looks like there was an error while saving"}
           onClose={back}
         />
       )}
       {mode === ERROR_DELETE && (
-        <Error 
-          message={'ERROR DELETING'}
+        <Error
+          message={"ERROR DELETING"}
+          errMessage={"Oops looks like there was an error while deleting"}
           onClose={back}
         />
       )}
