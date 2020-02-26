@@ -4,10 +4,10 @@ Interview Scheduler is a single-page scheduling app that is responsive. You can 
 
 ## Screenshots
 
-!["Screenshot of Landing page"]()
-!["Screenshot of Editing Appointment"]()
-!["Screenshot of Deleting Appointment"]()
-!["Screenshot of Mobile page"]()
+!["Screenshot of Landing page"](https://github.com/AustinNaz/scheduler/blob/master/docs/Show-appointment.png?raw=true)
+!["Screenshot of Editing Appointment"](https://github.com/AustinNaz/scheduler/blob/master/docs/Edit-appointment.png?raw=true)
+!["Screenshot of Deleting Appointment"](https://github.com/AustinNaz/scheduler/blob/master/docs/Delete-appointment.png?raw=true)
+!["Screenshot of Mobile page"](https://github.com/AustinNaz/scheduler/blob/master/docs/Mobile-appointment.png?raw=true)
 
 ## Setup
 
